@@ -1,0 +1,12 @@
+apply plugin: 'groovy'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+  testCompile 'org.spockframework:spock-core:1.0-groovy-2.4'
+}
