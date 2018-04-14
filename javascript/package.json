@@ -13,12 +13,5 @@
   "devDependencies": {
     "mocha": "^5.0.5",
     "standard": "^11.0.1"
-  },
-  "eslintConfig": {
-    "extends": "standard",
-    "env": {
-      "node": true,
-      "mocha": true
-    }
   }
 }
