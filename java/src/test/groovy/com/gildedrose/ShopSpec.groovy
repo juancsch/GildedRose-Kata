@@ -13,7 +13,7 @@ class ShopSpec extends Specification {
         shop.updateQuality()
 
         then: 'the quality is correct'
-        shop.items[0].quality == 1
+        shop.items[0].quality == 2
     }
 
     def 'Cuando la fecha de venta a pasado, la calidad se degrada al doble de velocidad'() {
