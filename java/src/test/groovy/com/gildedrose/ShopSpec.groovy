@@ -13,7 +13,7 @@ class ShopSpec extends Specification {
         shop.updateQuality()
 
         then: 'the quality is correct'
-        shop.items[0].quality == 2
+        shop.items[0].quality == 1
     }
 
     def 'Cuando la fecha de venta a pasado, la calidad se degrada al doble de velocidad'() {
@@ -52,6 +52,18 @@ class ShopSpec extends Specification {
         shop.items[0].quality == 4
     }
 
+    def 'Cuando la fecha de venta a pasado, el item "aged brie" incrementa su calidad el doble'() {
+
+        given: 'the application with these items'
+        Shop shop = new Shop([new Item('Aged Brie', -1, 3)] as Item[])
+
+        when: 'updating quality'
+        shop.updateQuality()
+
+        then: 'the quality is correct'
+        shop.items[0].quality == 5
+    }
+
     def 'La calidad de un item nunca es mayor de 50'() {
 
         given: 'the application with these items'
@@ -76,7 +88,7 @@ class ShopSpec extends Specification {
         shop.items[0].quality == 40
     }
 
-    def 'Los backstage passes incrementan su valided en dos 10 días antes de la fecha de "sell in"'() {
+    def 'Los "backstage passes" incrementan su valided en dos 10 días antes de la fecha de "sell in"'() {
 
         given: 'the application with these items'
         Shop shop = new Shop([new Item('Backstage passes to a TAFKAL80ETC concert', 10, 10)] as Item[])
