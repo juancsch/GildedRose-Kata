@@ -6,7 +6,6 @@
   "author": "",
   "license": "ISC",
   "scripts" : {
-    "pretest": "npm i",
     "test": "mocha -G ./**/*.js",
     "tdd": "mocha -Gw ./**/*.js"
   },

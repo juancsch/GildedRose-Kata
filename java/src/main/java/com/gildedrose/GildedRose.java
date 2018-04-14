@@ -1,10 +1,10 @@
 package com.gildedrose;
 
-class Shop {
+class GildedRose {
 
     public final Item[] items;
 
-    public Shop(Item[] items) {
+    public GildedRose(Item[] items) {
         this.items = items;
     }
 

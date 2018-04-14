@@ -18,7 +18,7 @@ public class TexttestFixture {
                 // this conjured item does not work properly yet
                 new Item("Conjured Mana Cake", 3, 6) };
 
-        Shop app = new Shop(items);
+        GildedRose app = new GildedRose(items);
 
         int days = 2;
         if (args.length > 0) {
