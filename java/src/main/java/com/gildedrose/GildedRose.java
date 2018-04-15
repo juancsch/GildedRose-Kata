@@ -33,11 +33,11 @@ class GildedRose {
             final boolean notIsAgeBrie = !isAgeBrie;
             final boolean notSulfuras = !SULFURAS.equals(currentItem.name);
 
-            if (notIsAgeBrie && notIsBackstagePasses && notSulfuras && hasSomeQuality(currentItem)) {
+            if (notIsAgeBrie && notIsBackstagePasses && notSulfuras) {
                 decreaseQuality(currentItem);
             }
 
-            if ((isAgeBrie || isBackstagePasses) && maximumQualityNotReach(currentItem)) {
+            if (isAgeBrie || isBackstagePasses) {
 
                 increaseQuality(currentItem);
 
@@ -56,7 +56,7 @@ class GildedRose {
 
             if (isSellinExpired(currentItem)) {
 
-                if (notIsAgeBrie && notIsBackstagePasses && notSulfuras && hasSomeQuality(currentItem)) {
+                if (notIsAgeBrie && notIsBackstagePasses && notSulfuras) {
                     decreaseQuality(currentItem);
                 }
 
@@ -64,7 +64,7 @@ class GildedRose {
                     resetQuality(currentItem);
                 }
 
-                if (isAgeBrie && maximumQualityNotReach(currentItem)) {
+                if (isAgeBrie) {
                     increaseQuality(currentItem);
                 }
             }
@@ -80,13 +80,14 @@ class GildedRose {
         return currentItem.sellIn < DOUBLE_INCREMENT_THRESHOLD;
     }
 
-    private boolean maximumQualityNotReach(Item currentItem) {
-        return currentItem.quality < MAXIMUM_QUALITY;
-    }
+	private boolean maximumQualityReach(Item currentItem) {
+		return currentItem.quality >= MAXIMUM_QUALITY;
+	}
 
-    private boolean hasSomeQuality(Item currentItem) {
-        return currentItem.quality > MINIMUN_QUALITY;
-    }
+	private boolean notHasSomeQuality(Item currentItem) {
+		return currentItem.quality <= MINIMUN_QUALITY;
+	}
+
     private boolean isSellinExpired(Item currentItem) {
         return currentItem.sellIn < MINIMUM_SELLIN;
     }
@@ -101,10 +102,13 @@ class GildedRose {
     }
 
     private void increaseQuality(Item item) {
-        item.quality = item.quality + QUALITY_UNIT;
+    	// guard clauses
+    	if (maximumQualityReach(item)) return;
+	    item.quality = item.quality + QUALITY_UNIT;
     }
 
     private void decreaseQuality(Item item) {
-        item.quality = item.quality - QUALITY_UNIT;
+    	if (notHasSomeQuality(item)) return;
+    	item.quality = item.quality - QUALITY_UNIT;
     }
 }
