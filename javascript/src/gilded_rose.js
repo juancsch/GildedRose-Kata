@@ -35,25 +35,22 @@ class GildedRose {
       const isNotBackstagePasses = !isBackstagePasses
       const isNotSulfuras = currentItem.name !== this._SULFURAS
 
-      if (isNotAgeBrie && isNotBackstagePasses && isNotSulfuras && this.hasSomeQuality(currentItem)) {
+      if (isNotAgeBrie && isNotBackstagePasses && isNotSulfuras) {
         this.decreaseQuality(currentItem)
       }
 
       if (isAgeBrie || isBackstagePasses) {
 
-        if (this.maximumQualityNotReach(currentItem)) {
+        this.increaseQuality(currentItem)
 
-          this.increaseQuality(currentItem)
+        if (isBackstagePasses) {
 
-          if (isBackstagePasses) {
+          if (this.isInDoubleIncrement(currentItem)) {
+            this.increaseQuality(currentItem)
+          }
 
-            if (this.isInDoubleIncrement(currentItem) && this.maximumQualityNotReach(currentItem)) {
-              this.increaseQuality(currentItem)
-            }
-
-            if (this.isInTripleIncrement(currentItem) && this.maximumQualityNotReach(currentItem)) {
-              this.increaseQuality(currentItem)
-            }
+          if (this.isInTripleIncrement(currentItem)) {
+            this.increaseQuality(currentItem)
           }
         }
       }
@@ -64,7 +61,7 @@ class GildedRose {
 
       if (this.isExpired(currentItem)) {
 
-        if (isNotAgeBrie && isNotBackstagePasses && isNotSulfuras && this.hasSomeQuality(currentItem)) {
+        if (isNotAgeBrie && isNotBackstagePasses && isNotSulfuras) {
           this.decreaseQuality(currentItem)
         }
 
@@ -72,7 +69,7 @@ class GildedRose {
           this.resetQuality(currentItem)
         }
 
-        if (isAgeBrie && this.maximumQualityNotReach(currentItem)) {
+        if (isAgeBrie) {
           this.increaseQuality(currentItem)
         }
       }
@@ -88,36 +85,33 @@ class GildedRose {
   }
 
   increaseQuality (currentItem) {
+    if (this.maximumQualityReach(currentItem)) return
     currentItem.quality = currentItem.quality + this._UNIT_QUALITY
   }
 
   decreaseQuality (currentItem) {
+    if (this.hasNotSomeQuality(currentItem)) return
     currentItem.quality = currentItem.quality - this._UNIT_QUALITY
   }
 
   isExpired (currentItem) {
-    const isExpired = currentItem.sellIn < this._MINIMUM_SELLIN
-    return isExpired
+    return currentItem.sellIn < this._MINIMUM_SELLIN
   }
 
   isInTripleIncrement (currentItem) {
-    const isInTripleIncrement = currentItem.sellIn < this._TRIPLE_INCREMENT_THRESHOLD
-    return isInTripleIncrement
+    return currentItem.sellIn < this._TRIPLE_INCREMENT_THRESHOLD
   }
 
   isInDoubleIncrement (currentItem) {
-    const isInDoubleIncrement = currentItem.sellIn < this._DOUBLE_INCREMENT_THRESHOLD
-    return isInDoubleIncrement
+    return currentItem.sellIn < this._DOUBLE_INCREMENT_THRESHOLD
   }
 
-  maximumQualityNotReach (currentItem) {
-    const maximumQualityNotReach = currentItem.quality < this._MAXIMUN_QUALITY
-    return maximumQualityNotReach
+  maximumQualityReach (currentItem) {
+    return currentItem.quality >= this._MAXIMUN_QUALITY
   }
 
-  hasSomeQuality (currentItem) {
-    const hasSomeQuality = currentItem.quality > this._MINIMUM_QUALITY
-    return hasSomeQuality
+  hasNotSomeQuality (currentItem) {
+    return currentItem.quality <= this._MINIMUM_QUALITY
   }
 }
 
