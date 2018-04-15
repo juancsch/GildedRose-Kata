@@ -8,6 +8,20 @@ class Item {
 
 class GildedRose {
   constructor (items) {
+
+    this._TRIPLE_INCREMENT_THRESHOLD = 6
+    this._DOUBLE_INCREMENT_THRESHOLD = 11
+    this._BACKSTAGE_PASSES = 'Backstage passes to a TAFKAL80ETC concert'
+    this._SULFURAS = 'Sulfuras, Hand of Ragnaros'
+    this._AGE_BRIE = 'Aged Brie'
+
+    this._UNIT_SELLIN = 1
+    this._MINIMUM_SELLIN = 0
+
+    this._UNIT_QUALITY = 1
+    this._MINIMUM_QUALITY = 0
+    this._MAXIMUN_QUALITY = 50
+
     this.items = items
   }
 
@@ -15,48 +29,59 @@ class GildedRose {
 
     for (const currentItem of this.items) {
 
-      if (currentItem.name !== 'Aged Brie' && currentItem.name !== 'Backstage passes to a TAFKAL80ETC concert') {
-        if (currentItem.quality > 0) {
-          if (currentItem.name !== 'Sulfuras, Hand of Ragnaros') {
-            currentItem.quality = currentItem.quality - 1
+      if (currentItem.name !== this._AGE_BRIE && currentItem.name !== this._BACKSTAGE_PASSES) {
+
+        if (currentItem.quality > this._MINIMUM_QUALITY) {
+
+          if (currentItem.name !== this._SULFURAS) {
+            currentItem.quality = currentItem.quality - this._UNIT_QUALITY
           }
         }
       } else {
-        if (currentItem.quality < 50) {
-          currentItem.quality = currentItem.quality + 1
-          if (currentItem.name === 'Backstage passes to a TAFKAL80ETC concert') {
-            if (currentItem.sellIn < 11) {
-              if (currentItem.quality < 50) {
-                currentItem.quality = currentItem.quality + 1
+        if (currentItem.quality < this._MAXIMUN_QUALITY) {
+
+          currentItem.quality = currentItem.quality + this._UNIT_QUALITY
+
+          if (currentItem.name === this._BACKSTAGE_PASSES) {
+
+            if (currentItem.sellIn < this._DOUBLE_INCREMENT_THRESHOLD) {
+              if (currentItem.quality < this._MAXIMUN_QUALITY) {
+                currentItem.quality = currentItem.quality + this._UNIT_QUALITY
               }
             }
-            if (currentItem.sellIn < 6) {
-              if (currentItem.quality < 50) {
-                currentItem.quality = currentItem.quality + 1
+
+            if (currentItem.sellIn < this._TRIPLE_INCREMENT_THRESHOLD) {
+              if (currentItem.quality < this._MAXIMUN_QUALITY) {
+                currentItem.quality = currentItem.quality + this._UNIT_QUALITY
               }
             }
           }
         }
       }
 
-      if (currentItem.name !== 'Sulfuras, Hand of Ragnaros') {
-        currentItem.sellIn = currentItem.sellIn - 1
+      if (currentItem.name !== this._SULFURAS) {
+        currentItem.sellIn = currentItem.sellIn - this._UNIT_SELLIN
       }
 
-      if (currentItem.sellIn < 0) {
-        if (currentItem.name !== 'Aged Brie') {
-          if (currentItem.name !== 'Backstage passes to a TAFKAL80ETC concert') {
-            if (currentItem.quality > 0) {
-              if (currentItem.name !== 'Sulfuras, Hand of Ragnaros') {
-                currentItem.quality = currentItem.quality - 1
+      if (currentItem.sellIn < this._MINIMUM_SELLIN) {
+
+        if (currentItem.name !== this._AGE_BRIE) {
+
+          if (currentItem.name !== this._BACKSTAGE_PASSES) {
+
+            if (currentItem.quality > this._MINIMUM_QUALITY) {
+
+              if (currentItem.name !== this._SULFURAS) {
+                currentItem.quality = currentItem.quality - this._UNIT_QUALITY
               }
             }
           } else {
             currentItem.quality = currentItem.quality - currentItem.quality
           }
         } else {
-          if (currentItem.quality < 50) {
-            currentItem.quality = currentItem.quality + 1
+
+          if (currentItem.quality < this._MAXIMUN_QUALITY) {
+            currentItem.quality = currentItem.quality + this._UNIT_QUALITY
           }
         }
       }
