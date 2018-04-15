@@ -29,20 +29,17 @@ class GildedRose {
 
     for (const currentItem of this.items) {
 
-      const isNotAgeBrie = currentItem.name !== this._AGE_BRIE
+      const isAgeBrie = currentItem.name === this._AGE_BRIE
+      const isNotAgeBrie = !isAgeBrie
       const isBackstagePasses = currentItem.name === this._BACKSTAGE_PASSES
       const isNotBackstagePasses = !isBackstagePasses
       const isNotSulfuras = currentItem.name !== this._SULFURAS
 
-      if (isNotAgeBrie && isNotBackstagePasses) {
+      if (isNotAgeBrie && isNotBackstagePasses && isNotSulfuras && this.hasSomeQuality(currentItem)) {
+        this.decreaseQuality(currentItem)
+      }
 
-        if (this.hasSomeQuality(currentItem)) {
-          if (isNotSulfuras) {
-            this.decreaseQuality(currentItem)
-          }
-        }
-
-      } else {
+      if (isAgeBrie || isBackstagePasses) {
 
         if (this.maximumQualityNotReach(currentItem)) {
 
@@ -50,16 +47,12 @@ class GildedRose {
 
           if (isBackstagePasses) {
 
-            if (this.isInDoubleIncrement(currentItem)) {
-              if (this.maximumQualityNotReach(currentItem)) {
-                this.increaseQuality(currentItem)
-              }
+            if (this.isInDoubleIncrement(currentItem) && this.maximumQualityNotReach(currentItem)) {
+              this.increaseQuality(currentItem)
             }
 
-            if (this.isInTripleIncrement(currentItem)) {
-              if (this.maximumQualityNotReach(currentItem)) {
-                this.increaseQuality(currentItem)
-              }
+            if (this.isInTripleIncrement(currentItem) && this.maximumQualityNotReach(currentItem)) {
+              this.increaseQuality(currentItem)
             }
           }
         }
@@ -71,27 +64,16 @@ class GildedRose {
 
       if (this.isExpired(currentItem)) {
 
-        if (isNotAgeBrie) {
+        if (isNotAgeBrie && isNotBackstagePasses && isNotSulfuras && this.hasSomeQuality(currentItem)) {
+          this.decreaseQuality(currentItem)
+        }
 
-          if (isNotBackstagePasses) {
+        if (isNotAgeBrie && isBackstagePasses) {
+          this.resetQuality(currentItem)
+        }
 
-            if (this.hasSomeQuality(currentItem)) {
-
-              if (isNotSulfuras) {
-                this.decreaseQuality(currentItem)
-              }
-
-            }
-
-          } else {
-            this.resetQuality(currentItem)
-          }
-
-        } else {
-
-          if (this.maximumQualityNotReach(currentItem)) {
-            this.increaseQuality(currentItem)
-          }
+        if (isAgeBrie && this.maximumQualityNotReach(currentItem)) {
+          this.increaseQuality(currentItem)
         }
       }
     }
