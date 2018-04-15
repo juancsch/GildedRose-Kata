@@ -37,15 +37,19 @@ class GildedRose {
                 decreaseQuality(currentItem);
             }
 
-            if (isAgeBrie || isBackstagePasses) {
+            if (isAgeBrie) {
+                increaseQuality(currentItem);
+            }
+
+            if (isBackstagePasses) {
 
                 increaseQuality(currentItem);
 
-                if (isBackstagePasses && isItInDoubleIncrement(currentItem)) {
+                if (isItInDoubleIncrement(currentItem)) {
                     increaseQuality(currentItem);
                 }
 
-                if (isBackstagePasses && isItInTripleIncrement(currentItem)) {
+                if (isItInTripleIncrement(currentItem)) {
                     increaseQuality(currentItem);
                 }
             }
