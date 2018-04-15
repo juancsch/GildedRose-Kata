@@ -38,7 +38,7 @@ class GildedRose {
 
         if (this.hasSomeQuality(currentItem)) {
           if (isNotSulfuras) {
-            currentItem.quality = currentItem.quality - this._UNIT_QUALITY
+            this.decreaseQuality(currentItem)
           }
         }
 
@@ -46,19 +46,19 @@ class GildedRose {
 
         if (this.maximumQualityNotReach(currentItem)) {
 
-          currentItem.quality = currentItem.quality + this._UNIT_QUALITY
+          this.increaseQuality(currentItem)
 
           if (isBackstagePasses) {
 
             if (this.isInDoubleIncrement(currentItem)) {
               if (this.maximumQualityNotReach(currentItem)) {
-                currentItem.quality = currentItem.quality + this._UNIT_QUALITY
+                this.increaseQuality(currentItem)
               }
             }
 
             if (this.isInTripleIncrement(currentItem)) {
               if (this.maximumQualityNotReach(currentItem)) {
-                currentItem.quality = currentItem.quality + this._UNIT_QUALITY
+                this.increaseQuality(currentItem)
               }
             }
           }
@@ -66,7 +66,7 @@ class GildedRose {
       }
 
       if (isNotSulfuras) {
-        currentItem.sellIn = currentItem.sellIn - this._UNIT_SELLIN
+        this.decreaseSellin(currentItem)
       }
 
       if (this.isExpired(currentItem)) {
@@ -78,23 +78,39 @@ class GildedRose {
             if (this.hasSomeQuality(currentItem)) {
 
               if (isNotSulfuras) {
-                currentItem.quality = currentItem.quality - this._UNIT_QUALITY
+                this.decreaseQuality(currentItem)
               }
 
             }
 
           } else {
-            currentItem.quality = currentItem.quality - currentItem.quality
+            this.resetQuality(currentItem)
           }
 
         } else {
 
           if (this.maximumQualityNotReach(currentItem)) {
-            currentItem.quality = currentItem.quality + this._UNIT_QUALITY
+            this.increaseQuality(currentItem)
           }
         }
       }
     }
+  }
+
+  resetQuality (currentItem) {
+    currentItem.quality = this._MINIMUM_QUALITY
+  }
+
+  decreaseSellin (currentItem) {
+    currentItem.sellIn = currentItem.sellIn - this._UNIT_SELLIN
+  }
+
+  increaseQuality (currentItem) {
+    currentItem.quality = currentItem.quality + this._UNIT_QUALITY
+  }
+
+  decreaseQuality (currentItem) {
+    currentItem.quality = currentItem.quality - this._UNIT_QUALITY
   }
 
   isExpired (currentItem) {
