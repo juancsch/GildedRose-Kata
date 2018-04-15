@@ -39,19 +39,20 @@ class GildedRose {
         this.decreaseQuality(currentItem)
       }
 
-      if (isAgeBrie || isBackstagePasses) {
+      if (isAgeBrie) {
+        this.increaseQuality(currentItem)
+      }
+
+      if (isBackstagePasses) {
 
         this.increaseQuality(currentItem)
 
-        if (isBackstagePasses) {
+        if (this.isInDoubleIncrement(currentItem)) {
+          this.increaseQuality(currentItem)
+        }
 
-          if (this.isInDoubleIncrement(currentItem)) {
-            this.increaseQuality(currentItem)
-          }
-
-          if (this.isInTripleIncrement(currentItem)) {
-            this.increaseQuality(currentItem)
-          }
+        if (this.isInTripleIncrement(currentItem)) {
+          this.increaseQuality(currentItem)
         }
       }
 
