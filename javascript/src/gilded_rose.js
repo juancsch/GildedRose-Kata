@@ -29,20 +29,25 @@ class GildedRose {
 
     for (const currentItem of this.items) {
 
-      if (currentItem.name !== this._AGE_BRIE && currentItem.name !== this._BACKSTAGE_PASSES) {
+      const isNotAgeBrie = currentItem.name !== this._AGE_BRIE
+      const isBackstagePasses = currentItem.name === this._BACKSTAGE_PASSES
+      const isNotBackstagePasses = !isBackstagePasses
+      const isNotSulfuras = currentItem.name !== this._SULFURAS
+
+      if (isNotAgeBrie && isNotBackstagePasses) {
 
         if (currentItem.quality > this._MINIMUM_QUALITY) {
-
-          if (currentItem.name !== this._SULFURAS) {
+          if (isNotSulfuras) {
             currentItem.quality = currentItem.quality - this._UNIT_QUALITY
           }
         }
       } else {
+
         if (currentItem.quality < this._MAXIMUN_QUALITY) {
 
           currentItem.quality = currentItem.quality + this._UNIT_QUALITY
 
-          if (currentItem.name === this._BACKSTAGE_PASSES) {
+          if (isBackstagePasses) {
 
             if (currentItem.sellIn < this._DOUBLE_INCREMENT_THRESHOLD) {
               if (currentItem.quality < this._MAXIMUN_QUALITY) {
@@ -59,19 +64,19 @@ class GildedRose {
         }
       }
 
-      if (currentItem.name !== this._SULFURAS) {
+      if (isNotSulfuras) {
         currentItem.sellIn = currentItem.sellIn - this._UNIT_SELLIN
       }
 
       if (currentItem.sellIn < this._MINIMUM_SELLIN) {
 
-        if (currentItem.name !== this._AGE_BRIE) {
+        if (isNotAgeBrie) {
 
-          if (currentItem.name !== this._BACKSTAGE_PASSES) {
+          if (isNotBackstagePasses) {
 
             if (currentItem.quality > this._MINIMUM_QUALITY) {
 
-              if (currentItem.name !== this._SULFURAS) {
+              if (isNotSulfuras) {
                 currentItem.quality = currentItem.quality - this._UNIT_QUALITY
               }
             }
