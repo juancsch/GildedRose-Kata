@@ -34,29 +34,35 @@ class GildedRose {
       const isNotBackstagePasses = !isBackstagePasses
       const isNotSulfuras = currentItem.name !== this._SULFURAS
 
+      const hasSomeQuality = currentItem.quality > this._MINIMUM_QUALITY
+      const maximumQualityNotReach = currentItem.quality < this._MAXIMUN_QUALITY
+      const isInDoubleIncrement = currentItem.sellIn < this._DOUBLE_INCREMENT_THRESHOLD
+      const isInTripleIncrement = currentItem.sellIn < this._TRIPLE_INCREMENT_THRESHOLD
+
       if (isNotAgeBrie && isNotBackstagePasses) {
 
-        if (currentItem.quality > this._MINIMUM_QUALITY) {
+        if (hasSomeQuality) {
           if (isNotSulfuras) {
             currentItem.quality = currentItem.quality - this._UNIT_QUALITY
           }
         }
+
       } else {
 
-        if (currentItem.quality < this._MAXIMUN_QUALITY) {
+        if (maximumQualityNotReach) {
 
           currentItem.quality = currentItem.quality + this._UNIT_QUALITY
 
           if (isBackstagePasses) {
 
-            if (currentItem.sellIn < this._DOUBLE_INCREMENT_THRESHOLD) {
-              if (currentItem.quality < this._MAXIMUN_QUALITY) {
+            if (isInDoubleIncrement) {
+              if (maximumQualityNotReach) {
                 currentItem.quality = currentItem.quality + this._UNIT_QUALITY
               }
             }
 
-            if (currentItem.sellIn < this._TRIPLE_INCREMENT_THRESHOLD) {
-              if (currentItem.quality < this._MAXIMUN_QUALITY) {
+            if (isInTripleIncrement) {
+              if (maximumQualityNotReach) {
                 currentItem.quality = currentItem.quality + this._UNIT_QUALITY
               }
             }
@@ -74,18 +80,21 @@ class GildedRose {
 
           if (isNotBackstagePasses) {
 
-            if (currentItem.quality > this._MINIMUM_QUALITY) {
+            if (hasSomeQuality) {
 
               if (isNotSulfuras) {
                 currentItem.quality = currentItem.quality - this._UNIT_QUALITY
               }
+
             }
+
           } else {
             currentItem.quality = currentItem.quality - currentItem.quality
           }
+
         } else {
 
-          if (currentItem.quality < this._MAXIMUN_QUALITY) {
+          if (maximumQualityNotReach) {
             currentItem.quality = currentItem.quality + this._UNIT_QUALITY
           }
         }
