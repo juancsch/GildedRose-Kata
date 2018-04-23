@@ -62,49 +62,55 @@ class GildedRose {
   }
 
   updateQuality () {
-    for (const currentItem of this.items) {
-      const isAgeBrie = currentItem.name === AGE_BRIE
-      const isNotAgeBrie = !isAgeBrie
-      const isBackstagePasses = currentItem.name === BACKSTAGE_PASSES
-      const isNotBackstagePasses = !isBackstagePasses
-      const isNotSulfuras = currentItem.name !== SULFURAS
+    function updateSellingFor (item) {
+      if (isNotSulfuras) {
+        item.decreaseSellin()
+      }
+    }
 
-	  if (isNotSulfuras) {
-	    currentItem.decreaseSellin()
-	  }
-
+    function updateQualityFor (item) {
       if (isNotAgeBrie && isNotBackstagePasses && isNotSulfuras) {
-        currentItem.decreaseQuality()
+        item.decreaseQuality()
 
-		if (currentItem.isExpired()) {
-		  currentItem.decreaseQuality()
-		}
+        if (item.isExpired()) {
+          item.decreaseQuality()
+        }
       }
 
       if (isAgeBrie) {
-        currentItem.increaseQuality()
+        item.increaseQuality()
 
-	    if (currentItem.isExpired()) {
-		  currentItem.increaseQuality()
-	    }
+        if (item.isExpired()) {
+          item.increaseQuality()
+        }
       }
 
-	  if (isBackstagePasses) {
+      if (isBackstagePasses) {
+        item.increaseQuality()
 
-        currentItem.increaseQuality()
-
-	    if (isInDoubleIncrement(currentItem)) {
-	        currentItem.increaseQuality()
+        if (isInDoubleIncrement(item)) {
+          item.increaseQuality()
         }
 
-        if (isInTripleIncrement(currentItem)) {
-          currentItem.increaseQuality()
+        if (isInTripleIncrement(item)) {
+          item.increaseQuality()
         }
 
-	    if (currentItem.isExpired()) {
-		  currentItem.resetQuality()
-	    }
+        if (item.isExpired()) {
+          item.resetQuality()
+        }
       }
+    }
+
+    for (const currentItem of this.items) {
+      var isAgeBrie = currentItem.name === AGE_BRIE
+      var isNotAgeBrie = !isAgeBrie
+      var isBackstagePasses = currentItem.name === BACKSTAGE_PASSES
+      var isNotBackstagePasses = !isBackstagePasses
+      var isNotSulfuras = currentItem.name !== SULFURAS
+
+      updateSellingFor(currentItem)
+      updateQualityFor(currentItem)
     }
   }
 }
