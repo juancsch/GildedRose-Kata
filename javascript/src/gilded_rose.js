@@ -48,12 +48,57 @@ const BACKSTAGE_PASSES = 'Backstage passes to a TAFKAL80ETC concert'
 const SULFURAS = 'Sulfuras, Hand of Ragnaros'
 const AGE_BRIE = 'Aged Brie'
 
-function isInTripleIncrement (currentItem) {
-  return currentItem.sellIn < TRIPLE_INCREMENT_THRESHOLD
+function updateSellingFor (item) {
+  if (item.name === SULFURAS) return
+  item.decreaseSellin()
 }
 
-function isInDoubleIncrement (currentItem) {
-  return currentItem.sellIn < DOUBLE_INCREMENT_THRESHOLD
+function updateQualityFor (item) {
+  function isInTripleIncrement (currentItem) {
+    return currentItem.sellIn < TRIPLE_INCREMENT_THRESHOLD
+  }
+
+  function isInDoubleIncrement (currentItem) {
+    return currentItem.sellIn < DOUBLE_INCREMENT_THRESHOLD
+  }
+
+  const isAgeBrie = item.name === AGE_BRIE
+  const isNotAgeBrie = !isAgeBrie
+  const isBackstagePasses = item.name === BACKSTAGE_PASSES
+  const isNotBackstagePasses = !isBackstagePasses
+  const isNotSulfuras = item.name !== SULFURAS
+
+  if (isNotAgeBrie && isNotBackstagePasses && isNotSulfuras) {
+    item.decreaseQuality()
+
+    if (item.isExpired()) {
+      item.decreaseQuality()
+    }
+  }
+
+  if (isAgeBrie) {
+    item.increaseQuality()
+
+    if (item.isExpired()) {
+      item.increaseQuality()
+    }
+  }
+
+  if (isBackstagePasses) {
+    item.increaseQuality()
+
+    if (isInDoubleIncrement(item)) {
+      item.increaseQuality()
+    }
+
+    if (isInTripleIncrement(item)) {
+      item.increaseQuality()
+    }
+
+    if (item.isExpired()) {
+      item.resetQuality()
+    }
+  }
 }
 
 class GildedRose {
@@ -62,56 +107,10 @@ class GildedRose {
   }
 
   updateQuality () {
-    function updateSellingFor (item) {
-      if (isNotSulfuras) {
-        item.decreaseSellin()
-      }
-    }
-
-    function updateQualityFor (item) {
-      if (isNotAgeBrie && isNotBackstagePasses && isNotSulfuras) {
-        item.decreaseQuality()
-
-        if (item.isExpired()) {
-          item.decreaseQuality()
-        }
-      }
-
-      if (isAgeBrie) {
-        item.increaseQuality()
-
-        if (item.isExpired()) {
-          item.increaseQuality()
-        }
-      }
-
-      if (isBackstagePasses) {
-        item.increaseQuality()
-
-        if (isInDoubleIncrement(item)) {
-          item.increaseQuality()
-        }
-
-        if (isInTripleIncrement(item)) {
-          item.increaseQuality()
-        }
-
-        if (item.isExpired()) {
-          item.resetQuality()
-        }
-      }
-    }
-
-    for (const currentItem of this.items) {
-      var isAgeBrie = currentItem.name === AGE_BRIE
-      var isNotAgeBrie = !isAgeBrie
-      var isBackstagePasses = currentItem.name === BACKSTAGE_PASSES
-      var isNotBackstagePasses = !isBackstagePasses
-      var isNotSulfuras = currentItem.name !== SULFURAS
-
+    this.items.forEach(currentItem => {
       updateSellingFor(currentItem)
       updateQualityFor(currentItem)
-    }
+    })
   }
 }
 
