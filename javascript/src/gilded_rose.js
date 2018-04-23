@@ -69,42 +69,41 @@ class GildedRose {
       const isNotBackstagePasses = !isBackstagePasses
       const isNotSulfuras = currentItem.name !== SULFURAS
 
+	  if (isNotSulfuras) {
+	    currentItem.decreaseSellin()
+	  }
+
       if (isNotAgeBrie && isNotBackstagePasses && isNotSulfuras) {
         currentItem.decreaseQuality()
+
+		if (currentItem.isExpired()) {
+		  currentItem.decreaseQuality()
+		}
       }
 
       if (isAgeBrie) {
         currentItem.increaseQuality()
+
+	    if (currentItem.isExpired()) {
+		  currentItem.increaseQuality()
+	    }
       }
 
-      if (isBackstagePasses) {
+	  if (isBackstagePasses) {
+
         currentItem.increaseQuality()
 
-        if (isInDoubleIncrement(currentItem)) {
-          currentItem.increaseQuality()
+	    if (isInDoubleIncrement(currentItem)) {
+	        currentItem.increaseQuality()
         }
 
         if (isInTripleIncrement(currentItem)) {
           currentItem.increaseQuality()
         }
-      }
 
-      if (isNotSulfuras) {
-        currentItem.decreaseSellin()
-      }
-
-      if (currentItem.isExpired()) {
-        if (isNotAgeBrie && isNotBackstagePasses && isNotSulfuras) {
-          currentItem.decreaseQuality()
-        }
-
-        if (isNotAgeBrie && isBackstagePasses) {
-          currentItem.resetQuality()
-        }
-
-        if (isAgeBrie) {
-          currentItem.increaseQuality()
-        }
+	    if (currentItem.isExpired()) {
+		  currentItem.resetQuality()
+	    }
       }
     }
   }
