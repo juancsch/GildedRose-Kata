@@ -1,122 +1,116 @@
+const UNIT_SELLIN = 1
+const MINIMUM_SELLIN = 0
+const UNIT_QUALITY = 1
+const MINIMUM_QUALITY = 0
+const MAXIMUN_QUALITY = 50
+
+function maximumQualityReach (quality) {
+  return quality >= MAXIMUN_QUALITY
+}
+
+function hasNotSomeQuality (quality) {
+  return quality <= MINIMUM_QUALITY
+}
+
 class Item {
   constructor (name, sellIn, quality) {
     this.name = name
     this.sellIn = sellIn
     this.quality = quality
   }
+
+  isExpired () {
+    return this.sellIn < MINIMUM_SELLIN
+  }
+
+  decreaseSellin () {
+    this.sellIn = this.sellIn - UNIT_SELLIN
+  }
+
+  resetQuality () {
+    this.quality = MINIMUM_QUALITY
+  }
+
+  increaseQuality () {
+    if (maximumQualityReach(this.quality)) return
+    this.quality = this.quality + UNIT_QUALITY
+  }
+
+  decreaseQuality () {
+    if (hasNotSomeQuality(this.quality)) return
+    this.quality = this.quality - UNIT_QUALITY
+  }
+}
+
+const TRIPLE_INCREMENT_THRESHOLD = 6
+const DOUBLE_INCREMENT_THRESHOLD = 11
+const BACKSTAGE_PASSES = 'Backstage passes to a TAFKAL80ETC concert'
+const SULFURAS = 'Sulfuras, Hand of Ragnaros'
+const AGE_BRIE = 'Aged Brie'
+
+function isInTripleIncrement (currentItem) {
+  return currentItem.sellIn < TRIPLE_INCREMENT_THRESHOLD
+}
+
+function isInDoubleIncrement (currentItem) {
+  return currentItem.sellIn < DOUBLE_INCREMENT_THRESHOLD
 }
 
 class GildedRose {
   constructor (items) {
-
-    this._TRIPLE_INCREMENT_THRESHOLD = 6
-    this._DOUBLE_INCREMENT_THRESHOLD = 11
-    this._BACKSTAGE_PASSES = 'Backstage passes to a TAFKAL80ETC concert'
-    this._SULFURAS = 'Sulfuras, Hand of Ragnaros'
-    this._AGE_BRIE = 'Aged Brie'
-
-    this._UNIT_SELLIN = 1
-    this._MINIMUM_SELLIN = 0
-
-    this._UNIT_QUALITY = 1
-    this._MINIMUM_QUALITY = 0
-    this._MAXIMUN_QUALITY = 50
-
     this.items = items
   }
 
   updateQuality () {
-
     for (const currentItem of this.items) {
-
-      const isAgeBrie = currentItem.name === this._AGE_BRIE
+      const isAgeBrie = currentItem.name === AGE_BRIE
       const isNotAgeBrie = !isAgeBrie
-      const isBackstagePasses = currentItem.name === this._BACKSTAGE_PASSES
+      const isBackstagePasses = currentItem.name === BACKSTAGE_PASSES
       const isNotBackstagePasses = !isBackstagePasses
-      const isNotSulfuras = currentItem.name !== this._SULFURAS
+      const isNotSulfuras = currentItem.name !== SULFURAS
 
       if (isNotAgeBrie && isNotBackstagePasses && isNotSulfuras) {
-        this.decreaseQuality(currentItem)
+        currentItem.decreaseQuality()
       }
 
       if (isAgeBrie) {
-        this.increaseQuality(currentItem)
+        currentItem.increaseQuality()
       }
 
       if (isBackstagePasses) {
+        currentItem.increaseQuality()
 
-        this.increaseQuality(currentItem)
-
-        if (this.isInDoubleIncrement(currentItem)) {
-          this.increaseQuality(currentItem)
+        if (isInDoubleIncrement(currentItem)) {
+          currentItem.increaseQuality()
         }
 
-        if (this.isInTripleIncrement(currentItem)) {
-          this.increaseQuality(currentItem)
+        if (isInTripleIncrement(currentItem)) {
+          currentItem.increaseQuality()
         }
       }
 
       if (isNotSulfuras) {
-        this.decreaseSellin(currentItem)
+        currentItem.decreaseSellin()
       }
 
-      if (this.isExpired(currentItem)) {
-
+      if (currentItem.isExpired()) {
         if (isNotAgeBrie && isNotBackstagePasses && isNotSulfuras) {
-          this.decreaseQuality(currentItem)
+          currentItem.decreaseQuality()
         }
 
         if (isNotAgeBrie && isBackstagePasses) {
-          this.resetQuality(currentItem)
+          currentItem.resetQuality()
         }
 
         if (isAgeBrie) {
-          this.increaseQuality(currentItem)
+          currentItem.increaseQuality()
         }
       }
     }
   }
-
-  resetQuality (currentItem) {
-    currentItem.quality = this._MINIMUM_QUALITY
-  }
-
-  decreaseSellin (currentItem) {
-    currentItem.sellIn = currentItem.sellIn - this._UNIT_SELLIN
-  }
-
-  increaseQuality (currentItem) {
-    if (this.maximumQualityReach(currentItem)) return
-    currentItem.quality = currentItem.quality + this._UNIT_QUALITY
-  }
-
-  decreaseQuality (currentItem) {
-    if (this.hasNotSomeQuality(currentItem)) return
-    currentItem.quality = currentItem.quality - this._UNIT_QUALITY
-  }
-
-  isExpired (currentItem) {
-    return currentItem.sellIn < this._MINIMUM_SELLIN
-  }
-
-  isInTripleIncrement (currentItem) {
-    return currentItem.sellIn < this._TRIPLE_INCREMENT_THRESHOLD
-  }
-
-  isInDoubleIncrement (currentItem) {
-    return currentItem.sellIn < this._DOUBLE_INCREMENT_THRESHOLD
-  }
-
-  maximumQualityReach (currentItem) {
-    return currentItem.quality >= this._MAXIMUN_QUALITY
-  }
-
-  hasNotSomeQuality (currentItem) {
-    return currentItem.quality <= this._MINIMUM_QUALITY
-  }
 }
 
 module.exports = {
-  Item,
-  GildedRose
+  GildedRose,
+  Item
 }
