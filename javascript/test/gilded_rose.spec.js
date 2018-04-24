@@ -1,5 +1,6 @@
 const assert = require('assert')
-const {Item, GildedRose} = require('../src/gilded_rose')
+const GildedRose = require('../src/gilded_rose')
+const Item = require('../src/item')
 
 describe('Quality update specifications', function () {
   it('Los items degradan la calidad en una unidad por cada actualización', function () {
