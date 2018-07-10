@@ -5,7 +5,7 @@
   "main": "index.js",
   "author": "",
   "license": "ISC",
-  "scripts" : {
+  "scripts": {
     "test": "mocha -G ./**/*.js",
     "tdd": "mocha -Gw ./**/*.js"
   },
