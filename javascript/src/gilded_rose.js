@@ -63,5 +63,5 @@ class GildedRose {
 
 module.exports = {
   Item,
-  GildedRose: GildedRose
+  GildedRose
 }
