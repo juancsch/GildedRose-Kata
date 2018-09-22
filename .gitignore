@@ -18,3 +18,7 @@
 *out/
 *node_modules/
 *project/
+
+# Cobertura
+.nyc_output
+coverage
